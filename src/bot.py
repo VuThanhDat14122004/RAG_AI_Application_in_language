@@ -38,16 +38,18 @@ def read_vector_db(vector_db_path):
     db = FAISS.load_local(vector_db_path, embedding_model, allow_dangerous_deserialization=True)
     return db
 
-db = read_vector_db("vector_db/info_history_db_faiss")
-llm = load_llm(model_file)
 
-template = """<|im_start|>system\nUse the following information to answer the question. If you don't know the answer, say you don't know, don't try to make up the answer.\n
-    {context}<|im_end|>\n<|im_start|>user\n{question}<|im_end|>\n<|im_start|>assistant"""
+if __name__ == "__main__":
+    db = read_vector_db("vector_db/info_history_db_faiss")
+    llm = load_llm(model_file)
 
-prompt = create_prompt(template)
+    template = """<|im_start|>system\nUse the following information to answer the question. If you don't know the answer, say you don't know, don't try to make up the answer.\n
+        {context}<|im_end|>\n<|im_start|>user\n{question}<|im_end|>\n<|im_start|>assistant"""
 
-llm_chain  =create_chain(prompt, llm, db)
+    prompt = create_prompt(template)
 
-question = "Who named the city of Pittsburgh?"
-response = llm_chain.invoke({"query": question})
-print(response)
+    llm_chain  =create_chain(prompt, llm, db)
+
+    question = "Who named the city of Pittsburgh?"
+    response = llm_chain.invoke({"query": question})
+    print(response)

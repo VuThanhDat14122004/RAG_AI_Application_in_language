@@ -24,17 +24,19 @@ def create_qa_chain(prompt, llm):
     llm_chain = LLMChain(prompt=prompt, llm=llm)
     return llm_chain
 
-template = """<|im_start|>system
-You are a helpful AI assistant. Respond to users accurately then stop and generate no more answers.
-<|im_end|>
-<|im_start|>user
-{question}<|im_end|>
-<|im_start|>assistant"""
 
-prompt = create_prompt(template)
-llm = load_llm(model_file)
-llm_chain = create_qa_chain(prompt, llm)
+if __name__ == "__main__":
+    template = """<|im_start|>system
+    You are a helpful AI assistant. Respond to users accurately then stop and generate no more answers.
+    <|im_end|>
+    <|im_start|>user
+    {question}<|im_end|>
+    <|im_start|>assistant"""
 
-question = "What is one plus one?"
-response = llm_chain.invoke({"question":question})
-print(response)
+    prompt = create_prompt(template)
+    llm = load_llm(model_file)
+    llm_chain = create_qa_chain(prompt, llm)
+
+    question = "What is one plus one?"
+    response = llm_chain.invoke({"question":question})
+    print(response)
